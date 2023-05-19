@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
 import sqlite3 as sql
-
+#Bunda
 import bcrypt
 
 import cripto_senha as cs
