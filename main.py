@@ -1,10 +1,14 @@
+#banco de dados e layout
 import PySimpleGUI as sg
 import sqlite3 as sql
-#Bunda
+
+#criptografia
 import bcrypt
 import bcrypt as bc
 
+#minhas funcoes
 import layout as lo
+import functions as fc
 
 #----------------------------------------------------------Variaveis e Coisas importantes---------------------------------------
 
@@ -50,7 +54,7 @@ def reconhecer_cript(senhai, hashedi):
     else:
         sg.popup("Senha Errada!")
 
-def confirm_cadastro(senha, check):
+def confirm_cadastro():
     cripto = cript_senha(senha, check)
 
     user_cursor.execute(f'CREATE TABLE IF NOT EXISTS "Usuarios" ("usuario" VARCHAR(255), "senha" VARCHAR(255), "email" VARCHAR(255))')
@@ -77,7 +81,6 @@ def fazer_login():
         user_cursor.execute(f"SELECT senha FROM 'Usuarios' WHERE email = '{email}'")
         login = user_cursor.fetchall()
         login_sen = login[0][0]
-
         return reconhecer_cript(senha, login_sen)
 
 def add_senha():
@@ -122,7 +125,7 @@ while True:
             sg.popup('Senha muito pequena, tente outra!')
 
         else:
-            confirm_cadastro(senha, check)
+            confirm_cadastro()
 
     if window == janela1 and event == "Fazer Login":
         email = values[0]
