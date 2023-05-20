@@ -50,7 +50,7 @@ def reconhecer_cript(senhai, hashedi):
     else:
         sg.popup("Senha Errada!")
 
-def confirm_cadastro():
+def confirm_cadastro(senha, check):
     cripto = cript_senha(senha, check)
 
     user_cursor.execute(f'CREATE TABLE IF NOT EXISTS "Usuarios" ("usuario" VARCHAR(255), "senha" VARCHAR(255), "email" VARCHAR(255))')
@@ -122,7 +122,7 @@ while True:
             sg.popup('Senha muito pequena, tente outra!')
 
         else:
-            confirm_cadastro()
+            confirm_cadastro(senha, check)
 
     if window == janela1 and event == "Fazer Login":
         email = values[0]
