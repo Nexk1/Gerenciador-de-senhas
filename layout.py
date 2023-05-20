@@ -1,28 +1,37 @@
 import PySimpleGUI as sg
 
+
 def tela_login():
-    sg.theme('DarkAmber')
-    layout = [
-        [sg.Text('Usuario')],
-        [sg.InputText()],
-        [sg.Text('Senha')],
-        [sg.InputText()],
-        [sg.Text('Nome da Tabela')],
-        [sg.InputText()],
-        [sg.Button('Fazer login'), sg.Button('Cadastro')]
-    ]
-    return sg.Window('janela_login', layout=layout, finalize=True)
-
-
+  sg.theme('LightGrey6')
+  layout = [[sg.Text('Email', size=(15, 1), font=(16))],
+            [sg.InputText(font=16)],
+            [sg.Text('Senha', size = (15,1), font=(16))],
+            [sg.InputText(font=16, password_char='*')],
+            [sg.Button('Fazer Login', size=(18), font=(8)), sg.Button('Cadastro', size=(21), font=(16))]]
+  return sg.Window('janela_login', layout=layout, finalize=True)
+#Tela de login
 def tela_cadastro():
-    sg.theme('DarkAmber')
-    layout = [
-        [sg.Text('Usuario desejado \n')],
-        [sg.InputText()],
-        [sg.Text('Senha desejada \n')],
-        [sg.InputText()],
-        [sg.Text('Nome da Tabela desejado \n')],
-        [sg.InputText()],
-        [sg.Button('Fazer Cadastro'), sg.Button('Voltar')]
-    ]
+  sg.theme('LightGrey6')
+  layout = [[sg.Text('Usuario desejado', size = (15,1), font=(16))], [sg.InputText(font=16)],
+            [sg.Text('Senha desejada', size = (15,1), font=(16))], [sg.InputText(font=16, password_char='*')],
+            [sg.Text('Confirmar Senha', size = (15,1), font=(16))], [sg.InputText(font=16, password_char='*')],
+            [sg.Text('Email', size=(15, 1), font=(16))], [sg.InputText(font=16)],
+            [sg.Button('Fazer Cadastro', size=(18), font=(8)),
+             sg.Button('Voltar', size=(21), font=(8))]]
+  return sg.Window('janela_cadastro', layout=layout, finalize=True)
+#Tela de cadastro
+def tela_logado(usuario):
+    layout = [[sg.Text(f'Ola {usuario}', size = (15,1), font=(16))],
+              [sg.Button('Adicionar Senha', size=(18), font=(8)), sg.Button('Excluir Senha', size=(18), font=(8)), sg.Button("Fazer logout", size=(18), font=(8))],
+              [sg.Text("        Suas senhas abaixo      ")]]
+
+    return sg.Window('janela_login', layout=layout, finalize=True)
+#Tela Logado
+
+def tela_add_senha():
+    sg.theme('LightGrey6')
+    layout = [[sg.Text('Adicione o Local abaixo:', size=(20, 1), font=(16))], [sg.InputText(font=(16))],
+              [sg.Button('8', font=(8)), sg.Button('16', font=(16)), sg.Button('32', font=(16))],
+              [sg.Button('Cadastrar Senha', size=(21), font=(8)),
+               sg.Button('Voltar', size=(21), font=(8))]]
     return sg.Window('janela_cadastro', layout=layout, finalize=True)

@@ -4,6 +4,8 @@ import sqlite3 as sql
 import bcrypt
 import bcrypt as bc
 
+import layout as lo
+
 #----------------------------------------------------------Variaveis e Coisas importantes---------------------------------------
 
 con = sql.connect("Banco_de_dados.db")
@@ -38,7 +40,12 @@ def reconhecer_cript(senhai, hashedi):
     hashed = hashed.encode('utf-8')
 
     if bcrypt.checkpw(senha, hashed):
-        janela3 = tela_logado()
+        if window == janela1:
+            email = values[0]
+            user_cursor.execute(f'SELECT usuario FROM Usuarios WHERE email = "{email}"')
+            usuario = user_cursor.fetchall()
+            usuario = usuario[0][0]
+        janela3 = lo.tela_logado(usuario)
         janela1.hide()
     else:
         sg.popup("Senha Errada!")
@@ -79,57 +86,14 @@ def add_senha():
 
 #--------------------------------------------------------------Layout das telas------------------------------------------------
 
-
-def tela_login():
-  sg.theme('LightGrey6')
-  layout = [[sg.Text('Email', size=(15, 1), font=(16))],
-            [sg.InputText(font=16)],
-            [sg.Text('Senha', size = (15,1), font=(16))],
-            [sg.InputText(font=16, password_char='*')],
-            [sg.Button('Fazer Login', size=(18), font=(8)), sg.Button('Cadastro', size=(21), font=(16))]]
-  return sg.Window('janela_login', layout=layout, finalize=True)
-
-
-def tela_cadastro():
-  sg.theme('LightGrey6')
-  layout = [[sg.Text('Usuario desejado', size = (15,1), font=(16))], [sg.InputText(font=16)],
-            [sg.Text('Senha desejada', size = (15,1), font=(16))], [sg.InputText(font=16, password_char='*')],
-            [sg.Text('Confirmar Senha', size = (15,1), font=(16))], [sg.InputText(font=16, password_char='*')],
-            [sg.Text('Email', size=(15, 1), font=(16))], [sg.InputText(font=16)],
-            [sg.Button('Fazer Cadastro', size=(18), font=(8)),
-             sg.Button('Voltar', size=(21), font=(8))]]
-  return sg.Window('janela_cadastro', layout=layout, finalize=True)
-
-def tela_logado():
-    if window == janela1:
-        email = values[0]
-        user_cursor.execute(f'SELECT usuario FROM Usuarios WHERE email = "{email}"')
-        usuario = user_cursor.fetchall()
-        usuario = usuario[0][0]
-    layout = [[sg.Text(f'Ola {usuario}', size = (15,1), font=(16))],
-              [sg.Button('Adicionar Senha', size=(18), font=(8)), sg.Button('Excluir Senha', size=(18), font=(8)), sg.Button("Fazer logout", size=(18), font=(8))],
-              [sg.Text("        Suas senhas abaixo      ")]
-]
-
-    return sg.Window('janela_login', layout=layout, finalize=True)
-
-def tela_add_senha():
-    sg.theme('LightGrey6')
-    layout = [[sg.Text('Adicione o Local abaixo:', size=(20, 1), font=(16))], [sg.InputText(font=16)],
-              [sg.Text('Senha desejada', size=(15, 1), font=(16))], [sg.InputText(font=16, password_char='*')],
-              [sg.Text('Confirmar Senha', size=(15, 1), font=(16))], [sg.InputText(font=16, password_char='*')],
-              [sg.Button('Fazer Cadastro', size=(18), font=(8)),
-               sg.Button('Voltar', size=(21), font=(8))]]
-    return sg.Window('janela_cadastro', layout=layout, finalize=True)
-
-janela1, janela2, janela3, janela4, janela5= tela_login(), None, None, None, None
+janela1, janela2, janela3, janela4, janela5= lo.tela_login(), None, None, None, None
 
 while True:
     window, event, values = sg.read_all_windows()
     if window == janela1 and event == sg.WIN_CLOSED:
         break
     if window == janela1 and event == 'Cadastro':
-        janela2 = tela_cadastro()
+        janela2 = lo.tela_cadastro()
         janela1.hide()
     if window == janela2 and event == sg.WIN_CLOSED:
         break
@@ -161,7 +125,17 @@ while True:
             confirm_cadastro()
 
     if window == janela1 and event == "Fazer Login":
-        fazer_login()
+        email = values[0]
+        senha = values[1]
+
+        if senha == "" and email == "":
+            sg.popup("Preencha os campos!")
+        elif email == "":
+            sg.popup("Coloque o email")
+        elif senha == "":
+            sg.popup("Coloque a senha!")
+        else:
+            fazer_login()
 
 
     if window == janela3 and event == sg.WIN_CLOSED:
@@ -172,7 +146,7 @@ while True:
         janela1.un_hide()
 
     if window == janela3 and event == "Adicionar Senha":
-        janela4 = tela_add_senha()
+        janela4 = lo.tela_add_senha()
 
     if window == janela4 and event == sg.WIN_CLOSED:
         janela4.hide()
