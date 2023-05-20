@@ -1,6 +1,7 @@
 import secrets
 import string
 
+
 class tam_senha():
     def __init__(self):
         letras = string.ascii_letters
@@ -15,5 +16,3 @@ class tam_senha():
         for i in range(tamanho_senha):
             senha += "".join(secrets.choice(alfabeto))
         print(senha)
-
-
