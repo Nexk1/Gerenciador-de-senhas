@@ -46,8 +46,8 @@ def reconhecer_cript(senhai, hashedi):
 def confirm_cadastro():
     cripto = cript_senha(senha, check)
 
-    user_cursor.execute(f'CREATE TABLE IF NOT EXISTS "Usuarios" ("Usuarios" VARCHAR(255), "Senha" VARCHAR(255))')
-    user_cursor.execute(f'INSERT INTO "Usuarios" VALUES ("{usuario}", "{cripto}")')
+    user_cursor.execute(f'CREATE TABLE IF NOT EXISTS "Usuarios" ("usuario" VARCHAR(255), "senha" VARCHAR(255), "email" VARCHAR(255))')
+    user_cursor.execute(f'INSERT INTO "Usuarios" VALUES ("{usuario}", "{cripto}", "{email}")')
     user_con.commit()
 
     if window == janela2 and event == "Fazer Cadastro":
@@ -60,14 +60,14 @@ def confirm_cadastro():
 
 def fazer_login():
         global senha
-        global usuario
+        global email
         global check
         global login_sen
 
-        usuario = values[0]
+        email = values[0]
         senha = values[1]
 
-        user_cursor.execute(f"SELECT senha FROM 'Usuarios' WHERE usuario = '{usuario}'")
+        user_cursor.execute(f"SELECT senha FROM 'Usuarios' WHERE email = '{email}'")
         login = user_cursor.fetchall()
         login_sen = login[0][0]
 
@@ -82,7 +82,7 @@ def add_senha():
 
 def tela_login():
   sg.theme('LightGrey6')
-  layout = [[sg.Text('Usuario', size = (15,1), font=(16))],
+  layout = [[sg.Text('Email', size=(15, 1), font=(16))],
             [sg.InputText(font=16)],
             [sg.Text('Senha', size = (15,1), font=(16))],
             [sg.InputText(font=16, password_char='*')],
@@ -95,13 +95,16 @@ def tela_cadastro():
   layout = [[sg.Text('Usuario desejado', size = (15,1), font=(16))], [sg.InputText(font=16)],
             [sg.Text('Senha desejada', size = (15,1), font=(16))], [sg.InputText(font=16, password_char='*')],
             [sg.Text('Confirmar Senha', size = (15,1), font=(16))], [sg.InputText(font=16, password_char='*')],
+            [sg.Text('Email', size=(15, 1), font=(16))], [sg.InputText(font=16)],
             [sg.Button('Fazer Cadastro', size=(18), font=(8)),
              sg.Button('Voltar', size=(21), font=(8))]]
   return sg.Window('janela_cadastro', layout=layout, finalize=True)
 
 def tela_logado():
     if window == janela1:
-        usuario = values[0]
+        email = values[0]
+        user_cursor.execute(f'SELECT usuario FROM Usuarios WHERE email = {email}')
+        usuario = user_cursor.fetchall()
     layout = [[sg.Text(f'Ola {usuario}')],
               [sg.Button('Adicionar Senha'), sg.Button('Excluir Senha'), sg.Button("Fazer logout")],
               [sg.Text("        Suas senhas abaixo      ")]
@@ -138,6 +141,7 @@ while True:
         usuario = values[0]
         senha = values[1]
         check = values[2]
+        email = values[3]
 
         if usuario == "":
             sg.popup('Erro, Digite um usuario')
