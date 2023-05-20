@@ -48,13 +48,17 @@ def reconhecer_cript(senhai, hashedi):
 def confirm_cadastro():
     cripto = cript_senha(senha, check)
 
-    user_cursor.execute(f'INSERT INTO "Usuarios" VALUES ("{usuario}", "{cripto}")')
-    user_con.commit()
+    try:
+        user_cursor.execute(f'INSERT INTO "Usuarios" VALUES ("{usuario}", "{cripto}")')
+        user_con.commit()
+    except:
+        sg.popup("Usuário já Cadastrado")
 
     if window == janela2 and event == "Fazer Cadastro":
         janela2.hide()
         janela1.un_hide()
         sg.popup("Seu Cadastro foi concluido")
+
 
 def fazer_login():
         global senha
@@ -77,21 +81,21 @@ def fazer_login():
 
 def tela_login():
   sg.theme('DarkGray')
-  layout = [[sg.Text('Usuario')],
-            [sg.InputText()],
-            [sg.Text('Senha')],
-            [sg.InputText()],
-            [sg.Button('Fazer Login'), sg.Button('Cadastro')]]
+  layout = [[sg.Text('Usuario', size = (15,1), font=(16))],
+            [sg.InputText(font=16)],
+            [sg.Text('Senha', size = (15,1), font=(16))],
+            [sg.InputText(font=16, password_char='*')],
+            [sg.Button('Fazer Login', size=(18), font=(8)), sg.Button('Cadastro', size=(21), font=(16))]]
   return sg.Window('janela_login', layout=layout, finalize=True)
 
 
 def tela_cadastro():
   sg.theme('DarkGray')
-  layout = [[sg.Text('Usuario desejado')], [sg.InputText()],
-            [sg.Text('Senha desejada')], [sg.InputText()],
-            [sg.Text('Confirmar Senha')], [sg.InputText()],
-            [sg.Button('Fazer Cadastro'),
-             sg.Button('Voltar')]]
+  layout = [[sg.Text('Usuario desejado', size = (15,1), font=(16))], [sg.InputText(font=16)],
+            [sg.Text('Senha desejada', size = (15,1), font=(16))], [sg.InputText(font=16, password_char='*')],
+            [sg.Text('Confirmar Senha', size = (15,1), font=(16))], [sg.InputText(font=16, password_char='*')],
+            [sg.Button('Fazer Cadastro', size=(18), font=(8)),
+             sg.Button('Voltar', size=(21), font=(8))]]
   return sg.Window('janela_cadastro', layout=layout, finalize=True)
 
 def tela_logado():
@@ -133,6 +137,12 @@ while True:
             sg.popup('Erro, Digite uma senha')
         elif check == "":
             sg.popup('Erro, Digite a senha igual')
+
+
+        senha_num = len(senha)
+
+        if senha_num < 8:
+            sg.popup('Senha muito pequena, tente outra!')
 
         else:
             confirm_cadastro()
