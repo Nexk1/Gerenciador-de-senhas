@@ -115,7 +115,7 @@ def tela_logado():
 
 def tela_add_senha():
     sg.theme('LightGrey6')
-    layout = [[sg.Text('Adicione o Local abaixo:', size=(15, 1), font=(16))], [sg.InputText(font=16)],
+    layout = [[sg.Text('Adicione o Local abaixo:', size=(20, 1), font=(16))], [sg.InputText(font=16)],
               [sg.Text('Senha desejada', size=(15, 1), font=(16))], [sg.InputText(font=16, password_char='*')],
               [sg.Text('Confirmar Senha', size=(15, 1), font=(16))], [sg.InputText(font=16, password_char='*')],
               [sg.Button('Fazer Cadastro', size=(18), font=(8)),
