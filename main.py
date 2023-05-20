@@ -49,11 +49,9 @@ def confirm_cadastro():
     user_cursor.execute(f'CREATE TABLE IF NOT EXISTS "Usuarios" ("Usuarios" VARCHAR(255), "Senha" VARCHAR(255))')
     user_cursor.execute(f'INSERT INTO "Usuarios" VALUES ("{usuario}", "{cripto}")')
     user_con.commit()
-    sg.popup("Usuário já Cadastrado")
-
 
     if window == janela2 and event == "Fazer Cadastro":
-        cursor.execute(f'CREATE TABLE IF NOT EXISTS "{usuario}" VALUES ("Locais" VARCHAR(255), "Senhas" VARCHAR(255))')
+        cursor.execute(f'CREATE TABLE IF NOT EXISTS "{usuario}"("Locais" VARCHAR(255), "Senhas" VARCHAR(255))')
         con.commit()
         janela2.hide()
         janela1.un_hide()
