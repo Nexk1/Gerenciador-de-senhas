@@ -46,13 +46,15 @@ def reconhecer_cript(senhai, hashedi):
 def confirm_cadastro():
     cripto = cript_senha(senha, check)
 
-    try:
-        user_cursor.execute(f'INSERT INTO "Usuarios" VALUES ("{usuario}", "{cripto}")')
-        user_con.commit()
-    except:
-        sg.popup("Usuário já Cadastrado")
+    user_cursor.execute(f'CREATE TABLE IF NOT EXISTS "Usuarios" ("Usuarios" VARCHAR(255), "Senha" VARCHAR(255))')
+    user_cursor.execute(f'INSERT INTO "Usuarios" VALUES ("{usuario}", "{cripto}")')
+    user_con.commit()
+    sg.popup("Usuário já Cadastrado")
+
 
     if window == janela2 and event == "Fazer Cadastro":
+        cursor.execute(f'CREATE TABLE IF NOT EXISTS "{usuario}" VALUES ("Locais" VARCHAR(255), "Senhas" VARCHAR(255))')
+        con.commit()
         janela2.hide()
         janela1.un_hide()
         sg.popup("Seu Cadastro foi concluido")
@@ -167,4 +169,4 @@ while True:
         janela1.un_hide()
 
     if window == janela4 and event == "Adicionar Senha":
-        janela5 = add_senha()
+        janela5 = tela_add_senha()
