@@ -73,12 +73,15 @@ def fazer_login():
 
         return reconhecer_cript(senha, login_sen)
 
+def add_senha():
+    pass
+
 
 #--------------------------------------------------------------Layout das telas------------------------------------------------
 
 
 def tela_login():
-  sg.theme('DarkGray')
+  sg.theme('LightGrey6')
   layout = [[sg.Text('Usuario', size = (15,1), font=(16))],
             [sg.InputText(font=16)],
             [sg.Text('Senha', size = (15,1), font=(16))],
@@ -88,7 +91,7 @@ def tela_login():
 
 
 def tela_cadastro():
-  sg.theme('DarkGray')
+  sg.theme('LightGrey6')
   layout = [[sg.Text('Usuario desejado', size = (15,1), font=(16))], [sg.InputText(font=16)],
             [sg.Text('Senha desejada', size = (15,1), font=(16))], [sg.InputText(font=16, password_char='*')],
             [sg.Text('Confirmar Senha', size = (15,1), font=(16))], [sg.InputText(font=16, password_char='*')],
@@ -106,9 +109,16 @@ def tela_logado():
 
     return sg.Window('janela_login', layout=layout, finalize=True)
 
+def tela_add_senha():
+    sg.theme('LightGrey6')
+    layout = [[sg.Text('Adicione o Local abaixo:', size=(15, 1), font=(16))], [sg.InputText(font=16)],
+              [sg.Text('Senha desejada', size=(15, 1), font=(16))], [sg.InputText(font=16, password_char='*')],
+              [sg.Text('Confirmar Senha', size=(15, 1), font=(16))], [sg.InputText(font=16, password_char='*')],
+              [sg.Button('Fazer Cadastro', size=(18), font=(8)),
+               sg.Button('Voltar', size=(21), font=(8))]]
+    return sg.Window('janela_cadastro', layout=layout, finalize=True)
 
-
-janela1, janela2, janela3, janela4 = tela_login(), None, None, None
+janela1, janela2, janela3, janela4, janela5= tela_login(), None, None, None, None
 
 while True:
     window, event, values = sg.read_all_windows()
@@ -157,4 +167,4 @@ while True:
         janela1.un_hide()
 
     if window == janela4 and event == "Adicionar Senha":
-        janela1
+        janela5 = add_senha()
