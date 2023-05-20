@@ -103,10 +103,11 @@ def tela_cadastro():
 def tela_logado():
     if window == janela1:
         email = values[0]
-        user_cursor.execute(f'SELECT usuario FROM Usuarios WHERE email = {email}')
+        user_cursor.execute(f'SELECT usuario FROM Usuarios WHERE email = "{email}"')
         usuario = user_cursor.fetchall()
-    layout = [[sg.Text(f'Ola {usuario}')],
-              [sg.Button('Adicionar Senha'), sg.Button('Excluir Senha'), sg.Button("Fazer logout")],
+        usuario = usuario[0][0]
+    layout = [[sg.Text(f'Ola {usuario}', size = (15,1), font=(16))],
+              [sg.Button('Adicionar Senha', size=(18), font=(8)), sg.Button('Excluir Senha', size=(18), font=(8)), sg.Button("Fazer logout", size=(18), font=(8))],
               [sg.Text("        Suas senhas abaixo      ")]
 ]
 
@@ -170,5 +171,11 @@ while True:
         janela3.hide()
         janela1.un_hide()
 
-    if window == janela4 and event == "Adicionar Senha":
-        janela5 = tela_add_senha()
+    if window == janela3 and event == "Adicionar Senha":
+        janela4 = tela_add_senha()
+
+    if window == janela4 and event == sg.WIN_CLOSED:
+        janela4.hide()
+
+    if window == janela4 and event == 'Voltar':
+        janela4.hide()
