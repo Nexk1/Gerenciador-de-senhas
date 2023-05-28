@@ -62,11 +62,14 @@ def confirm_cadastro():
     user_con.commit()
 
     if window == janela2 and event == "Fazer Cadastro":
-        cursor.execute(f'CREATE TABLE IF NOT EXISTS "{usuario}"("Locais" VARCHAR(255), "Senhas" VARCHAR(255))')
-        con.commit()
-        janela2.hide()
-        janela1.un_hide()
-        sg.popup("Seu Cadastro foi concluido")
+        if cripto:
+            cursor.execute(f'CREATE TABLE IF NOT EXISTS "{usuario}"("Locais" VARCHAR(255), "Senhas" VARCHAR(255))')
+            con.commit()
+            janela2.hide()
+            janela1.un_hide()
+            sg.popup("Seu Cadastro foi concluido")
+        else:
+            pass
 
 
 def fazer_login():
