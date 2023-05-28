@@ -104,7 +104,7 @@ def fazer_login():
 
 def add_senha(local, senhaU, checkbox, num):
     global email
-    if checkbox == True and senhaU =="":
+    if checkbox == True:
         senhauser = gerador(num)
 
     else:
