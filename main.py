@@ -106,9 +106,12 @@ def add_senha(local, senhaU, checkbox, num):
     global email
     if checkbox == True:
         senhauser = gerador(num)
-
+        janela4.hide()
+        sg.popup("Senha Cadastrada!")
     else:
         senhauser = senhaU
+        janela4.hide()
+        sg.popup("Senha Cadastrada!")
 
     cursor.execute(f'INSERT INTO "{email}" VALUES("{local}", "{senhauser}")')
     con.commit()
