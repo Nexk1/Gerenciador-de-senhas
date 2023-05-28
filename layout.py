@@ -29,9 +29,10 @@ def tela_logado(usuario):
 #Tela Logado
 
 def tela_add_senha():
+    tam = [i for i in range(1, 32)]
     sg.theme('LightGrey6')
     layout = [[sg.Text('Adicione o Local abaixo:', size=(20, 1), font=(16))], [sg.InputText(font=(16))],
-              [sg.Button('8', font=(8)), sg.Button('16', font=(16)), sg.Button('32', font=(16))],
+              [sg.InputText(font=(16)), sg.Checkbox("Senha Gerada"), sg.Spin(tam, initial_value=1, readonly=True, enable_events=True, size=3, background_color='#99ccff',text_color='Black', font=16)],
               [sg.Button('Cadastrar Senha', size=(21), font=(8)),
                sg.Button('Voltar', size=(21), font=(8))]]
     return sg.Window('janela_cadastro', layout=layout, finalize=True)

@@ -5,6 +5,8 @@ import sqlite3 as sql
 #criptografia
 import bcrypt
 import bcrypt as bc
+import secrets
+import string
 
 #minhas funcoes
 import layout as lo
@@ -20,6 +22,20 @@ user_cursor = user_con.cursor()
 
 login_sen = ""
 #--------------------------------------------------------------Funcionamento Tecnico-------------------------------------------------
+def gerador(senhasize):
+    letras = string.ascii_letters
+    digitos = string.digits
+    chars_espec = string.punctuation
+    alfabeto = letras + digitos + chars_espec
+
+    senha_gerada = ""
+    tamanho_senha = int(senhasize)
+
+    for i in range(tamanho_senha):
+        senha_gerada += "".join(secrets.choice(alfabeto))
+
+    return senha_gerada
+
 def cript_senha(passwordi, checkinp):
     password = passwordi
     check = checkinp
@@ -63,7 +79,7 @@ def confirm_cadastro():
 
     if window == janela2 and event == "Fazer Cadastro":
         if cripto:
-            cursor.execute(f'CREATE TABLE IF NOT EXISTS "{usuario}"("Locais" VARCHAR(255), "Senhas" VARCHAR(255))')
+            cursor.execute(f'CREATE TABLE IF NOT EXISTS "{email}"("Locais" VARCHAR(255), "Senhas" VARCHAR(255))')
             con.commit()
             janela2.hide()
             janela1.un_hide()
@@ -83,11 +99,19 @@ def fazer_login():
 
         user_cursor.execute(f"SELECT senha FROM 'Usuarios' WHERE email = '{email}'")
         login = user_cursor.fetchall()
-        login_sen = login[0][0]
-        return reconhecer_cript(senha, login_sen)
+        hashed_sen = login[0][0]
+        return reconhecer_cript(senha, hashed_sen)
 
-def add_senha():
-    pass
+def add_senha(local, senhaU, checkbox, num):
+    global email
+    if checkbox == True and senhaU =="":
+        senhauser = gerador(num)
+
+    else:
+        senhauser = senhaU
+
+    cursor.execute(f'INSERT INTO "{email}" VALUES("{local}", "{senhauser}")')
+    con.commit()
 
 
 #--------------------------------------------------------------Layout das telas------------------------------------------------
@@ -153,6 +177,13 @@ while True:
 
     if window == janela3 and event == "Adicionar Senha":
         janela4 = lo.tela_add_senha()
+
+    if window == janela4 and event == "Cadastrar Senha":
+        local = values[0]
+        senhaU = values[1]
+        checkbox = values[2]
+        numero = values[3]
+        add_senha(local, senhaU, checkbox, numero)
 
     if window == janela4 and event == sg.WIN_CLOSED:
         janela4.hide()
