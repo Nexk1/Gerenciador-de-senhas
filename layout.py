@@ -22,8 +22,9 @@ def tela_cadastro():
 #Tela de cadastro
 def tela_logado(usuario):
     layout = [[sg.Text(f'Ola {usuario}', size = (15,1), font=(16))],
-              [sg.Button('Adicionar Senha', size=(18), font=(8)), sg.Button('Excluir Senha', size=(18), font=(8)), sg.Button("Fazer logout", size=(18), font=(8))],
-              [sg.Text("        Suas senhas abaixo      ")]]
+              [sg.Button('Adicionar Senha', size=(18), font=(8)), sg.Button('Excluir Senha', size=(18), font=(8)), sg.Button("Fazer logout", size=(18), font=(8)),sg.Button("↻", size=(1,1), font=(8))],
+              [sg.Text("        Suas senhas abaixo      ")],
+              [sg.Output(size=(67,20), key="_output_", font=(12))]]
 
     return sg.Window('janela_login', layout=layout, finalize=True)
 #Tela Logado

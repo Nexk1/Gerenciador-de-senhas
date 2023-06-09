@@ -49,8 +49,26 @@ def cript_senha(passwordi, checkinp):
         sg.popup("Senhas Diferentes!")
 
 
+def mostrar_senha():
+    dadosbd = cursor.execute(f"SELECT * FROM {email}")
+    dados = dadosbd.fetchone()
+    dados = str(dados)
+    dados = dados.strip("()")
+    dados = dados.replace("'", "")
+    dados = dados.replace(",", "      -->      ")
+
+    print(dados)
+    for i in dadosbd:
+        dados = i
+        dados = str(dados)
+        dados = dados.strip("()")
+        dados = dados.replace("'", "")
+        dados = dados.replace(",", "      -->      ")
+
+        print(dados)
+
 def reconhecer_cript(senhai, hashedi):
-    global janela3
+    global telalogado
     senha = str(senhai)
     senha = senha.encode('utf-8')
 
@@ -60,13 +78,14 @@ def reconhecer_cript(senhai, hashedi):
     hashed = hashed.encode('utf-8')
 
     if bcrypt.checkpw(senha, hashed):
-        if window == janela1:
+        if window == lwin:
             email = values[0]
             user_cursor.execute(f'SELECT usuario FROM Usuarios WHERE email = "{email}"')
             usuario = user_cursor.fetchall()
             usuario = usuario[0][0]
-        janela3 = lo.tela_logado(usuario)
-        janela1.hide()
+        telalogado = lo.tela_logado(usuario)
+        lwin.hide()
+        mostrar_senha()
     else:
         sg.popup("Senha Errada!")
 
@@ -77,12 +96,12 @@ def confirm_cadastro():
     user_cursor.execute(f'INSERT INTO "Usuarios" VALUES ("{usuario}", "{cripto}", "{email}")')
     user_con.commit()
 
-    if window == janela2 and event == "Fazer Cadastro":
+    if window == cadwin and event == "Fazer Cadastro":
         if cripto:
             cursor.execute(f'CREATE TABLE IF NOT EXISTS "{email}"("Locais" VARCHAR(255), "Senhas" VARCHAR(255))')
             con.commit()
-            janela2.hide()
-            janela1.un_hide()
+            cadwin.hide()
+            lwin.un_hide()
             sg.popup("Seu Cadastro foi concluido")
         else:
             pass
@@ -100,17 +119,19 @@ def fazer_login():
         user_cursor.execute(f"SELECT senha FROM 'Usuarios' WHERE email = '{email}'")
         login = user_cursor.fetchall()
         hashed_sen = login[0][0]
+
         return reconhecer_cript(senha, hashed_sen)
+
 
 def add_senha(local, senhaU, checkbox, num):
     global email
     if checkbox == True:
         senhauser = gerador(num)
-        janela4.hide()
+        cadpass.hide()
         sg.popup("Senha Cadastrada!")
     else:
         senhauser = senhaU
-        janela4.hide()
+        cadpass.hide()
         sg.popup("Senha Cadastrada!")
 
     cursor.execute(f'INSERT INTO "{email}" VALUES("{local}", "{senhauser}")')
@@ -119,23 +140,23 @@ def add_senha(local, senhaU, checkbox, num):
 
 #--------------------------------------------------------------Layout das telas------------------------------------------------
 
-janela1, janela2, janela3, janela4, janela5= lo.tela_login(), None, None, None, None
+lwin, cadwin, telalogado, cadpass, janela5 = lo.tela_login(), None, None, None, None
 
 while True:
     window, event, values = sg.read_all_windows()
-    if window == janela1 and event == sg.WIN_CLOSED:
+    if window == lwin and event == sg.WIN_CLOSED:
         break
-    if window == janela1 and event == 'Cadastro':
-        janela2 = lo.tela_cadastro()
-        janela1.hide()
-    if window == janela2 and event == sg.WIN_CLOSED:
+    if window == lwin and event == 'Cadastro':
+        cadwin = lo.tela_cadastro()
+        lwin.hide()
+    if window == cadwin and event == sg.WIN_CLOSED:
         break
 
-    if window == janela2 and event == 'Voltar':
-        janela2.hide()
-        janela1.un_hide()
+    if window == cadwin and event == 'Voltar':
+        cadwin.hide()
+        lwin.un_hide()
 
-    if window == janela2 and event == 'Fazer Cadastro':
+    if window == cadwin and event == 'Fazer Cadastro':
         usuario = values[0]
         senha = values[1]
         check = values[2]
@@ -157,7 +178,7 @@ while True:
         else:
             confirm_cadastro()
 
-    if window == janela1 and event == "Fazer Login":
+    if window == lwin and event == "Fazer Login":
         email = values[0]
         senha = values[1]
 
@@ -171,25 +192,28 @@ while True:
             fazer_login()
 
 
-    if window == janela3 and event == sg.WIN_CLOSED:
+    if window == telalogado and event == sg.WIN_CLOSED:
         break
 
-    if window == janela3 and event == "Fazer logout":
-        janela3.hide()
-        janela1.un_hide()
+    if window == telalogado and event == "Fazer logout":
+        telalogado.hide()
+        lwin.un_hide()
 
-    if window == janela3 and event == "Adicionar Senha":
-        janela4 = lo.tela_add_senha()
+    if window == telalogado and event == "Adicionar Senha":
+        cadpass = lo.tela_add_senha()
 
-    if window == janela4 and event == "Cadastrar Senha":
+    if window == telalogado and event == "↻":
+        mostrar_senha()
+
+    if window == cadpass and event == "Cadastrar Senha":
         local = values[0]
         senhaU = values[1]
         checkbox = values[2]
         numero = values[3]
         add_senha(local, senhaU, checkbox, numero)
 
-    if window == janela4 and event == sg.WIN_CLOSED:
-        janela4.hide()
+    if window == cadpass and event == sg.WIN_CLOSED:
+        cadpass.hide()
 
-    if window == janela4 and event == 'Voltar':
-        janela4.hide()
+    if window == cadpass and event == 'Voltar':
+        cadpass.hide()
