@@ -220,3 +220,5 @@ while True:
 
     if window == telalogado and event == "Excluir Senha":
         lo.tela_delete_pass()
+
+        #FIM
