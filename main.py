@@ -10,7 +10,6 @@ import string
 
 #minhas funcoes
 import layout as lo
-import functions as fc
 
 #----------------------------------------------------------Variaveis e Coisas importantes---------------------------------------
 
@@ -140,7 +139,7 @@ def add_senha(local, senhaU, checkbox, num):
 
 #--------------------------------------------------------------Layout das telas------------------------------------------------
 
-lwin, cadwin, telalogado, cadpass, janela5 = lo.tela_login(), None, None, None, None
+lwin, cadwin, telalogado, cadpass, detpass = lo.tela_login(), None, None, None, None
 
 while True:
     window, event, values = sg.read_all_windows()
@@ -203,6 +202,7 @@ while True:
         cadpass = lo.tela_add_senha()
 
     if window == telalogado and event == "↻":
+        window.FindElement("_output_").Update("")
         mostrar_senha()
 
     if window == cadpass and event == "Cadastrar Senha":
@@ -217,3 +217,6 @@ while True:
 
     if window == cadpass and event == 'Voltar':
         cadpass.hide()
+
+    if window == telalogado and event == "Excluir Senha":
+        lo.tela_delete_pass()

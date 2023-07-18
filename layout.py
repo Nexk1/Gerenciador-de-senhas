@@ -37,3 +37,13 @@ def tela_add_senha():
               [sg.Button('Cadastrar Senha', size=(21), font=(8)),
                sg.Button('Voltar', size=(21), font=(8))]]
     return sg.Window('janela_cadastro', layout=layout, finalize=True)
+
+def tela_delete_pass():
+    sg.theme('LightGrey6')
+    layout = [[sg.Text('Escolha o nome da senha:', size=(20, 1), font=(16))], [sg.InputText(font=(16))],
+              [sg.InputText(font=(16)), sg.Checkbox("Senha Gerada"),
+               sg.Spin(tam, initial_value=1, readonly=True, enable_events=True, size=3, background_color='#99ccff',
+                       text_color='Black', font=16)],
+              [sg.Button('Cadastrar Senha', size=(21), font=(8)),
+               sg.Button('Voltar', size=(21), font=(8))]]
+    return sg.Window('janela_cadastro', layout=layout, finalize=True)
